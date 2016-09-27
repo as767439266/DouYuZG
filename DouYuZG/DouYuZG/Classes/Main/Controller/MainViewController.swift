@@ -12,7 +12,6 @@ class MainViewController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-     
         addChildVc(storyBordName: "Home")
         addChildVc(storyBordName: "Live")
         addChildVc(storyBordName: "Follow")
