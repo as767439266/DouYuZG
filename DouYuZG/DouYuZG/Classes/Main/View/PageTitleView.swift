@@ -154,3 +154,29 @@ extension PageTitleView{
         // 6.通知代理
         delegate?.pageTitleView(titleView: self, selectedIndex: currentIndex)    }
 }
+// MARK:- 对外暴露的方法
+extension PageTitleView {
+    func setTitleWithProgress(progress : CGFloat, sourceIndex : Int, targetIndex : Int) {
+        // 1.取出sourceLabel/targetLabel
+        let sourceLabel = titleLabels[sourceIndex]
+        let targetLabel = titleLabels[targetIndex]
+        
+        // 2.处理滑块的逻辑
+        let moveTotalX = targetLabel.frame.origin.x - sourceLabel.frame.origin.x
+        let moveX = moveTotalX * progress
+        scrollLine.frame.origin.x = sourceLabel.frame.origin.x + moveX
+        
+        // 3.颜色的渐变(复杂)
+        // 3.1.取出变化的范围
+        let colorDelta = (kSelectColor.0 - kNormalColor.0, kSelectColor.1 - kNormalColor.1, kSelectColor.2 - kNormalColor.2)
+        
+        // 3.2.变化sourceLabel
+        sourceLabel.textColor = UIColor(r: kSelectColor.0 - colorDelta.0 * progress, g: kSelectColor.1 - colorDelta.1 * progress, b: kSelectColor.2 - colorDelta.2 * progress)
+        
+        // 3.2.变化targetLabel
+        targetLabel.textColor = UIColor(r: kNormalColor.0 + colorDelta.0 * progress, g: kNormalColor.1 + colorDelta.1 * progress, b: kNormalColor.2 + colorDelta.2 * progress)
+        
+        // 4.记录最新的index
+        currentIndex = targetIndex
+    }
+}

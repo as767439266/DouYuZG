@@ -16,8 +16,6 @@ class MainViewController: UITabBarController {
         addChildVc(storyBordName: "Live")
         addChildVc(storyBordName: "Follow")
         addChildVc(storyBordName: "User")
-        
-       
     }
     private func addChildVc(storyBordName : String){
         //1  通过storyboard获取控制器
@@ -25,6 +23,4 @@ class MainViewController: UITabBarController {
         //2 childVc 作为子控制器子控制器
         addChildViewController(childVc)
     }
-
-  
 }
