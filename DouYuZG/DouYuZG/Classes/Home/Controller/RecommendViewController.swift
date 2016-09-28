@@ -8,6 +8,7 @@
 
 import UIKit
 private let kNormalCellID = "kNormalCellID"
+private let kPrettyCellID = "kPrettyCellID"
 private let kHeaderViewID = "kHeaderViewID"
 //设置大小 位置
 private let kItemMargin : CGFloat = 10
@@ -28,10 +29,12 @@ class RecommendViewController: UIViewController {
        //2创建UICollectionView
         let collecView = UICollectionView(frame:  self.view.bounds, collectionViewLayout: layout)
             collecView.dataSource = self
+            collecView.delegate = self
             collecView.backgroundColor = UIColor.white
         //注册cell
 //         collecView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: kNormalCellID)
         collecView.register(UINib(nibName: "CollectionNormalCell", bundle: nil), forCellWithReuseIdentifier: kNormalCellID)
+        collecView.register(UINib(nibName: "CollectionBaseCell", bundle: nil), forCellWithReuseIdentifier: kPrettyCellID)
 //        
          //注册headView
 //        collecView.register(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: kHeaderViewID)
@@ -58,7 +61,7 @@ extension RecommendViewController{
     }
 }
 //MARK:-遵守UICollectionViewDataSource的协议
-extension RecommendViewController:UICollectionViewDataSource{
+extension RecommendViewController:UICollectionViewDataSource,UICollectionViewDelegateFlowLayout{
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 8
     }
@@ -71,14 +74,27 @@ extension RecommendViewController:UICollectionViewDataSource{
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         //获取cell
-        let cell  = collectionView.dequeueReusableCell(withReuseIdentifier: kNormalCellID, for: indexPath)
+        var cell : UICollectionViewCell?
+        if indexPath.section == 1{
+              cell  = collectionView.dequeueReusableCell(withReuseIdentifier: kPrettyCellID, for: indexPath)
+        }else{
+        
+         cell  = collectionView.dequeueReusableCell(withReuseIdentifier: kNormalCellID, for: indexPath)
+        }
        // cell.backgroundColor = UIColor.blue
-        return cell
+        return cell!
     }
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         //获取 sectionHeadView
         let headView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: kHeaderViewID, for: indexPath)
        
         return headView
+    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        if indexPath.section == 1 {
+            return CGSize(width: kItemW, height: kPrettyItemH)
+        }
+        
+        return CGSize(width: kItemW, height: kNormalItemH)
     }
 }
