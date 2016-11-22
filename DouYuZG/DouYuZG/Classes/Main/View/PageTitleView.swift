@@ -25,6 +25,7 @@ class PageTitleView: UIView {
         scrollView.scrollsToTop = false
         scrollView.bounces = false
         return scrollView
+        
     }()
     
     lazy var scrollLine : UIView = {
